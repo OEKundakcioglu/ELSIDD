@@ -1,6 +1,3 @@
-import os
-import pickle
-
 import numpy as np
 import pandas as pd
 
@@ -37,7 +34,7 @@ class DatasetGenerator(object):
             temp_df.insert(loc=0, column='i', value=i + 1)
             temp_df.t += 1
             a_df = a_df.append(temp_df, ignore_index=True)
-        #a_df = a_df.round(2)
+        # a_df = a_df.round(2)
 
         # generation of u
         u_df = pd.DataFrame()
@@ -56,7 +53,7 @@ class DatasetGenerator(object):
             temp_df.t += 1
             u_df = u_df.append(temp_df, ignore_index=True)
 
-        #u_df = u_df.round(2)
+        # u_df = u_df.round(2)
 
         # generation of S
         S_df = pd.DataFrame()
@@ -77,7 +74,6 @@ class DatasetGenerator(object):
             temp_df.insert(loc=0, column='i', value=i + 1)
             temp_df.t += 1
             c_df = c_df.append(temp_df, ignore_index=True)
-        #c_df = c_df.round(3)
 
         # generation of h
         h_df = pd.DataFrame()
@@ -88,7 +84,6 @@ class DatasetGenerator(object):
             temp_df.columns = ['t', 'value']
             temp_df.insert(loc=0, column='i', value=i + 1)
             h_df = h_df.append(temp_df, ignore_index=True)
-
         # h_df = h_df.round(3)
 
         # generation of p
@@ -143,7 +138,7 @@ class DatasetGenerator(object):
                 for t in range(1, self.T + 1):
                     d[i, t, 0] = round((1.0 - a[i, t, 1]) * u[i, t, 0], 3)
                     # u[i, t, 0] = 0
-                    #d[i, t, 0] = d[i, t, 0] + a[i, t, 1] * u[i, t, 0], 3
+                    # d[i, t, 0] = d[i, t, 0] + a[i, t, 1] * u[i, t, 0], 3
                     for j in range(1, self.J + 1):
                         d[i, t, j] = d[i, t, j - 1] + a[i, t, j] * (u[i, t, j] - u[i, t, j - 1])
 
@@ -231,6 +226,7 @@ def ComputeUIrtj(U, I, D, u, a, d, i, T, J):
     return U, I, D
 
 
+"""
 data_params = {
     "S": {"lb": 100, "ub": 300},
     "c": {"lb": 0, "ub": 1},
@@ -260,7 +256,8 @@ for T in T_list:
                 list_of_datasets[key]={}
                 list_of_datasets[key]["dataset"]=dataset
                 list_of_datasets[key]["dataset_DP"]= datasetDP
-                """
+                
+                
                 file_name = "dataset_{}_{}_{}_{}".format(T, J, N, i)
                 f = open(file_name + '.pkl', "wb")
                 pickle.dump(dataset, f)
@@ -270,9 +267,10 @@ for T in T_list:
                 f = open(file_name + '.pkl', "wb")
                 pickle.dump(datasetDP, f)
                 f.close()
-                """
+                
                 
 file_name="sixtytentwenty"
 f=open(file_name + '.pkl', "wb")  
 pickle.dump(list_of_datasets, f)             
 f.close()
+"""

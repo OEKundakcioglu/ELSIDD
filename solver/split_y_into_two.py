@@ -1,11 +1,7 @@
-import pickle
-
 # from heuristic_profit import heuristic_with_U_cuts
-from .trans_mip import heuristic_with_transportation
 
 
 def PeriodDecomposition(instance, n_parts=2):
-    
     '''
     -This function decomposes problem instance to 2 equal-sized-parts. Resulting subproblems have the same structure as the original problem.
     
@@ -17,51 +13,49 @@ def PeriodDecomposition(instance, n_parts=2):
     -parts_list: a list containing subproblems.
     '''
 
-
-    
     parts_list = []
     N, T, J = max(instance["u"].keys())
-    part_size = T//n_parts
+    part_size = T // n_parts
     mydct1 = {}
     mydct2 = {}
-    
+
     for pkey in instance:
         mydct1[pkey] = {}
         mydct2[pkey] = {}
         for skey in instance[pkey]:
-            if pkey in ["a","d","u"]:
-                n,t,j = skey
-                if t<=part_size:
+            if pkey in ["a", "d", "u"]:
+                n, t, j = skey
+                if t <= part_size:
                     mydct1[pkey][skey] = instance[pkey][skey]
                 else:
-                    mydct2[pkey][(n,t-part_size,j)] = instance[pkey][skey]
-            
-            if pkey in ["S","c","p"]:
-                n,t = skey
-                if t<=part_size:
+                    mydct2[pkey][(n, t - part_size, j)] = instance[pkey][skey]
+
+            if pkey in ["S", "c", "p"]:
+                n, t = skey
+                if t <= part_size:
                     mydct1[pkey][skey] = instance[pkey][skey]
                 else:
-                    mydct2[pkey][(n,t-part_size)] = instance[pkey][skey]
+                    mydct2[pkey][(n, t - part_size)] = instance[pkey][skey]
 
             if pkey == "h":
-                n,t = skey
-                if t<=part_size:
+                n, t = skey
+                if t <= part_size:
                     mydct1[pkey][skey] = instance[pkey][skey]
-                if t>=part_size:
-                    mydct2[pkey][(n,t-part_size)] = instance[pkey][skey]
+                if t >= part_size:
+                    mydct2[pkey][(n, t - part_size)] = instance[pkey][skey]
 
-            
-            if pkey in ["B","C"]:
+            if pkey in ["B", "C"]:
                 t = skey
-                if t<=part_size:
+                if t <= part_size:
                     mydct1[pkey][skey] = instance[pkey][skey]
-                if t>part_size:
-                    mydct2[pkey][t-part_size] = instance[pkey][skey]
+                if t > part_size:
+                    mydct2[pkey][t - part_size] = instance[pkey][skey]
 
     parts_list.append(mydct1)
     parts_list.append(mydct2)
-    
+
     return parts_list
+
 
 """
 samples = pickle.load(open(f"samplesixtyfivefive.pkl", "rb"))
@@ -105,7 +99,6 @@ print("starting_tabu")
 tabu_result=tabu_function(key,d,y_new,left_time)
 """
 
-
 """
 T,J,N,i = 60,7,5,1
 key=(N,T,J)
@@ -136,15 +129,4 @@ for item in samples1.keys():
     results1.append(res)
     print((res[0]["objective_value"]))  
     print((res[1]["objective_value"])) 
-"""   
-
-   
-
-
-   
-  
-
-
-    
-
-    
+"""

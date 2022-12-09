@@ -23,7 +23,8 @@ class Variables:
     logger.addHandler(logging.StreamHandler())
     logger.setLevel(logging.INFO)
 
-    def __init__(self, parameters: Parameters, mdl: Model, initial_store_inventories: dict[tuple[Item, Store, int], int],
+    def __init__(self, parameters: Parameters, mdl: Model,
+                 initial_store_inventories: dict[tuple[Item, Store, int], int],
                  initial_factory_inventories: dict[tuple[Item, int], int]):
 
         self.parameters = parameters

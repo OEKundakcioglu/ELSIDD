@@ -40,14 +40,14 @@ def set_objective(mdl: Model, variables: Variables, parameters: Parameters):
                                for m in parameters.stores
                                for t in parameters.periods)
 
-        holding_cost_store_spesific = mdl.sum(m.holding_cost[i][t] * variables.z[i, m, t]
+        holding_cost_store_specific = mdl.sum(m.holding_cost[i][t] * variables.z[i, m, t]
                                               for i in parameters.items
                                               for m in parameters.stores
                                               for t in parameters.periods)
 
         mdl.set_objective("max",
                           revenue - fixed_production_cost - production_cost - holding_cost - fixed_renewal_cost - renewal_cost -
-                          holding_cost_store_spesific)
+                          holding_cost_store_specific)
 
         logger.info("Objective is set")
         placeholder.success("Objective is created")

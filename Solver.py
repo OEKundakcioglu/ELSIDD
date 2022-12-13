@@ -4,9 +4,9 @@ import pickle
 import pandas as pd
 import streamlit as st
 from streamlit_extras.switch_page_button import switch_page
-from tubitak.data import Parameters
-from tubitak.simple_heuristic import SimpleHeuristic
-from tubitak.model import Model
+from src.data import Parameters
+from src.simple_heuristic import SimpleHeuristic
+from src.model import Model
 
 st.set_page_config(page_title="Solver", page_icon=":bar_chart:")
 hide_streamlit_style = """

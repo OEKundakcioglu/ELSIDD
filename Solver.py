@@ -182,7 +182,6 @@ def main_page():
             st.session_state.solution_df = solution_df
 
     if solution_approach == "MILP":
-        st.markdown("Heuristic")
         problem = st.file_uploader("Upload Problem File")
         time_limit = int(st.text_input("Enter time limit (seconds)", value=50))
 

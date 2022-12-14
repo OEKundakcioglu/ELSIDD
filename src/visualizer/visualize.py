@@ -86,7 +86,7 @@ def inventories_for_store(solution: dict[str, pd.DataFrame], store, periods: lis
                           for period in periods], width=width, color="tab:orange")
 
     ax.legend((starting_inv_bar[0], after_renewal_bar[0], end_inv_bar[0]),
-              ("Starting inventory", "After renewal", "Ending inventory"))
+              ("Incoming Inventory", "After Order Arrival", "Ending inventory"))
 
     total_demands_for_items = {item: np.sum(solution["demand"]["demand"].values[solution["demand"]["store"] == store])
                                for item in solution["demand"]["item"].unique()}
@@ -223,4 +223,22 @@ def item_demand_pie_chart(solution: dict[str, pd.DataFrame], n_top):
 
     ax.pie(x=pie_sizes, labels=pie_labels)
 
+    return fig
+
+
+def plot_capacity(solution: dict[str, pd.DataFrame]):
+    items = solution["production"]["item"].values
+    periods = solution["production"]["period"].values
+    productions = solution["production"]["production"].values
+
+    fig, ax = plt.subplots()
+    fig: plt.Figure
+    ax: plt.Axes
+
+    production_line, = ax.plot(np.unique(periods), [np.sum(productions[periods == period]) for period in np.unique(periods)],
+                               color="tab:blue", label="Production")
+
+    ax.set_title("Production Over Periods", fontsize=20)
+    ax.legend([production_line], ["Production"], loc="upper right",
+              framealpha=1, facecolor='white', frameon=True)
     return fig

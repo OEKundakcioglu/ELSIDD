@@ -68,6 +68,10 @@ def dashboard():
     with col2:
         st.pyplot(top_n_demand(solution_df, 5, color="tab:cyan"))
 
+    col1, col2, col3 = st.columns([0.25, 1, 0.25])
+    with col2:
+        st.pyplot(plot_capacity(solution_df))
+
 
 if __name__ == "__main__":
     dashboard()

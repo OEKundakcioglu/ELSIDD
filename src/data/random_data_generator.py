@@ -76,7 +76,7 @@ class DataGenerator:
         self.__generate_demand_curve()
         self.logger.info("Demand curve is generated")
 
-        self.production_capacity = {t: np.random.uniform(600, 1000) for t in self.periods}
+        self.production_capacity = {t: np.random.uniform(150, 150) for t in self.periods}
         self.renewal_limit = {t: np.random.uniform(600, 1000) for t in self.periods}
 
     def __dict__(self):

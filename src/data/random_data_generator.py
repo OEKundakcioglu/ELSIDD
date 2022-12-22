@@ -40,7 +40,9 @@ class DataGenerator:
                              renewal_cost={item: {p: np.random.uniform(0.0001, 1) for p in self.periods}
                                            for item in self.items},
                              holding_cost={item: {p: np.random.uniform(0.0001, 1) for p in self.periods}
-                                           for item in self.items})
+                                           for item in self.items},
+                             u={item: self.__generate_demand_curve(n_segments=3)[0] for item in self.items},
+                             d={item: self.__generate_demand_curve(n_segments=3)[1] for item in self.items})
                        for i in range(self.num_stores)]
 
     def __generate_demand_curve(self, n_segments=3):
@@ -65,8 +67,7 @@ class DataGenerator:
             u_values.append(u_high)
             d_values.append(d_high)
 
-        self.u = u_values
-        self.d = d_values
+        return u_values, d_values
 
     def generate_data(self):
         self.__generate_items()
@@ -85,9 +86,7 @@ class DataGenerator:
             "stores": [store.__dict__() for store in self.stores],
             "periods": self.periods,
             "production_capacity": self.production_capacity,
-            "renewal_limit": self.renewal_limit,
-            "u": self.u,
-            "d": self.d
+            "renewal_limit": self.renewal_limit
         }
 
     def save_to_json(self, path):

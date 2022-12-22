@@ -56,14 +56,18 @@ def set_const4(mdl: Model, variables: Variables, parameters: Parameters):
     for i in parameters.items:
         for m in parameters.stores:
             for t in parameters.periods:
-                lambdas = mdl.continuous_var_list(keys=len(parameters.u), lb=0, name=f"lambda_{i.id}_{m.id}_{t}")
-                y = mdl.binary_var_list(keys=len(parameters.u) - 1, name=f"y_{i.id}_{m.id}_{t}")
+                d = m.d[i]
+                u = m.u[i]
+
+                lambdas = mdl.continuous_var_list(keys=len(u), lb=0, name=f"lambda_{i.id}_{m.id}_{t}")
+
+                y = mdl.binary_var_list(keys=len(u) - 1, name=f"y_{i.id}_{m.id}_{t}")
 
                 mdl.add_constraint(variables.D[i, m, t] ==
-                                   mdl.sum(lambdas[j] * parameters.d[j] for j in range(len(lambdas))),
+                                   mdl.sum(lambdas[j] * d[j] for j in range(len(lambdas))),
                                    ctname=f"const4D_{i.id}_{m.id}_{t}")
                 mdl.add_constraint(variables.U[i, m, t] ==
-                                   mdl.sum(lambdas[j] * parameters.u[j] for j in range(len(lambdas))),
+                                   mdl.sum(lambdas[j] * u[j] for j in range(len(lambdas))),
                                    ctname=f"const4U_{i.id}_{m.id}_{t}")
 
                 mdl.add_constraint(mdl.sum(lambdas) == 1,
@@ -76,7 +80,7 @@ def set_const4(mdl: Model, variables: Variables, parameters: Parameters):
                     mdl.add_constraint(y[j] <= lambdas[j] + lambdas[j + 1],
                                        ctname=f"const4range_{i.id}_{m.id}_{t}_{j}")
 
-                mdl.add_constraint(variables.D[i, m, t] <= parameters.d[-1], ctname=f"D_{i.id}_{m.id}_{t}_max_value")
+                mdl.add_constraint(variables.D[i, m, t] <= d[-1], ctname=f"D_{i.id}_{m.id}_{t}_max_value")
 
 
 def set_const5(mdl: Model, variables: Variables, parameters: Parameters):

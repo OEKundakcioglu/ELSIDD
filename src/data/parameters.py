@@ -12,14 +12,12 @@ class Parameters:
     periods: list[int]
     production_capacity: dict[int, int]
     renewal_limit: dict[int, int]
-    u: list[float]
-    d: list[float]
     logger = logging.getLogger("Parameters")
     logger.addHandler(logging.StreamHandler())
     logger.setLevel(logging.INFO)
 
     def __init__(self, items=None, stores=None, periods=None, production_capacity=None, renewal_limit=None,
-                 u=None, d=None, path=None, file=None):
+                 path=None, file=None):
         if path is not None or file is not None:
             with st.spinner("Loading parameters..."):
                 self.__load(path=path, file=file)
@@ -30,10 +28,8 @@ class Parameters:
             self.periods = periods
             self.production_capacity = production_capacity
             self.renewal_limit = renewal_limit
-            self.u = u
-            self.d = d
 
-        self.plot_g_function()
+        self.plot_g_function(self.stores[0], self.items[0])
 
     def __load(self, path=None, file=None):
         import json
@@ -77,23 +73,26 @@ class Parameters:
                                      hauled_item_limit={int(p): float(limit) for p, limit in
                                                         store["hauled_item_limit"].items()},
                                      renewal_cost=renewal_cost,
-                                     holding_cost=holding_cost))
+                                     holding_cost=holding_cost,
+                                     u={item: [float(u) for u in store["u"][str(item.id)]] for item in self.items},
+                                     d={item: [float(d) for d in store["d"][str(item.id)]] for item in self.items}))
 
         self.periods = [int(p) for p in data["periods"]]
         self.production_capacity = {int(p): int(capacity) for p, capacity in data["production_capacity"].items()}
         self.renewal_limit = {int(p): int(limit) for p, limit in data["renewal_limit"].items()}
-        self.u = [float(u) for u in data["u"]]
-        self.d = [float(d) for d in data["d"]]
 
         self.logger.info(f"Loaded parameters from {path}")
         st.text(f"Loaded parameters from {path}")
 
-    def plot_g_function(self):
+    def plot_g_function(self, store: Store, item: Item):
         fig, ax = plt.subplots()
         fig: plt.Figure
         ax: plt.Axes
 
-        ax.plot(self.u, self.d)
+        u = store.u[item]
+        d = store.d[item]
+
+        ax.plot(u, d)
         ax.set_title("G function")
         ax.set_xlabel("u")
         ax.set_ylabel("d")

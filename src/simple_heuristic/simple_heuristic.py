@@ -31,8 +31,7 @@ class SimpleHeuristic:
     def __get_problem_for_period(self, periods: list[int]) -> Parameters:
         sub_parameters = Parameters(self.parameters.items, self.parameters.stores,
                                     self.parameters.periods[periods[0]:periods[-1] + 1],
-                                    self.parameters.production_capacity, self.parameters.renewal_limit,
-                                    self.parameters.u, self.parameters.d)
+                                    self.parameters.production_capacity, self.parameters.renewal_limit)
         return sub_parameters
 
     def solve(self, time_limit=50):

@@ -8,16 +8,20 @@ class Store:
     hauled_item_limit: dict[int, float]
     renewal_cost: dict[Item, dict[int, float]]
     holding_cost: dict[Item, dict[int, float]]
+    u: dict[Item, list[float]]
+    d: dict[Item, list[float]]
 
     def __init__(self, id: int, order_renewal_cost: dict[int, float], store_capacity: int,
                  hauled_item_limit: dict[int, float], renewal_cost: dict[Item, dict[int, float]],
-                 holding_cost: dict[Item, dict[int, float]]):
+                 holding_cost: dict[Item, dict[int, float]], u: dict[Item, float], d: dict[Item, float]):
         self.id = id
         self.order_renewal_cost = order_renewal_cost
         self.store_capacity = store_capacity
         self.hauled_item_limit = hauled_item_limit
         self.renewal_cost = renewal_cost
         self.holding_cost = holding_cost
+        self.u = u
+        self.d = d
 
     def __hash__(self):
         return self.id
@@ -32,5 +36,7 @@ class Store:
             "store_capacity": self.store_capacity,
             "hauled_item_limit": self.hauled_item_limit,
             "renewal_cost": {item.id: self.renewal_cost[item] for item in self.renewal_cost},
-            "holding_cost": {item.id: self.holding_cost[item] for item in self.holding_cost}
+            "holding_cost": {item.id: self.holding_cost[item] for item in self.holding_cost},
+            "u": {item.id: self.u[item] for item in self.u},
+            "d": {item.id: self.d[item] for item in self.d}
         }

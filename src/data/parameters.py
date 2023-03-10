@@ -29,7 +29,6 @@ class Parameters:
             self.production_capacity = production_capacity
             self.renewal_limit = renewal_limit
 
-        self.plot_g_function(self.stores[0], self.items[0])
 
     def __load(self, path=None, file=None):
         import json
@@ -37,7 +36,7 @@ class Parameters:
         self.stores = []
         self.periods = []
 
-        if file is None:
+        if path is not None:
             with open(path, "r") as f:
                 data = json.load(f)
 
@@ -84,17 +83,3 @@ class Parameters:
         self.logger.info(f"Loaded parameters from {path}")
         st.text(f"Loaded parameters from {path}")
 
-    def plot_g_function(self, store: Store, item: Item):
-        fig, ax = plt.subplots()
-        fig: plt.Figure
-        ax: plt.Axes
-
-        u = store.u[item]
-        d = store.d[item]
-
-        ax.plot(u, d)
-        ax.set_title("G function")
-        ax.set_xlabel("u")
-        ax.set_ylabel("d")
-
-        plt.show()
